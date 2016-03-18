@@ -45,8 +45,8 @@ var Row = React.createClass({
 
     renderLabel: function() {
 
-        if (this.props.layout === 'elementOnly') {
-            return '';
+        if (this.props.layout === 'elementOnly' || !this.props.label) {
+            return;
         }
 
         var labelClassNames = [];

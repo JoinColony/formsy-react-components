@@ -137,18 +137,20 @@ module.exports = {
     },
 
     renderErrorMessage: function() {
-        if (!this.showErrors()) {
-            return '';
+        if (this.showErrors()) {
+            var errorMessages = this.getErrorMessages() || [];
+            return errorMessages.map((message, key) => {
+                return (
+                    <span key={key} className="help-block validation-message">{message}</span>
+                );
+            });
         }
-        var errorMessages = this.getErrorMessages() || [];
-        return errorMessages.map((message, key) => {
-            return (
-                <span key={key} className="help-block validation-message">{message}</span>
-            );
-        });
     },
 
     showErrors: function() {
+        if (!this.props.immediateValidation && !this.state.blurred && !this.isFormSubmitted()) {
+            return false;
+        }
         if (this.isPristine() === true) {
             if (this.getValidatePristine() === false) {
                 return false;

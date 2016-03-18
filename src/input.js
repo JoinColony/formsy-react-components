@@ -4,6 +4,7 @@
 
 var React = require('react');
 var Formsy = require('formsy-react');
+var classNames = require('classnames/dedupe');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
 // var Icon = require('./icon');
@@ -30,7 +31,8 @@ var Input = React.createClass({
             'time',
             'url',
             'week'
-        ])
+        ]),
+        immediateValidation: React.PropTypes.bool
         // addonBefore: React.PropTypes.oneOfType([
         //     React.PropTypes.string,
         //     React.PropTypes.node
@@ -57,6 +59,15 @@ var Input = React.createClass({
         var value = event.currentTarget.value;
         this.setValue(value);
         this.props.onChange(this.props.name, value);
+        this.setState({
+            blurred: false
+        });
+    },
+
+    setBlur: function () {
+        this.setState({
+            blurred: true
+        });
     },
 
     render: function() {
@@ -83,11 +94,9 @@ var Input = React.createClass({
         // }
 
         return (
-            <Row
-                {...this.getRowProperties()}
-                htmlFor={this.getId()}
-            >
+            <Row {...this.getRowProperties()} htmlFor={this.getId()}>
                 {element}
+                {this.renderHelp()}
                 {this.renderErrorMessage()}
             </Row>
         );
@@ -96,18 +105,23 @@ var Input = React.createClass({
     },
 
     renderElement: function() {
-        var className = 'input';
+        var inputClasses = ['input'];
+
+        if (this.showErrors()) {
+            inputClasses.push('is-danger');
+        }
+
         // if (['range'].indexOf(this.props.type) !== -1) {
         //     className = null;
         // }
         return (
             <input
-                className={className}
+                className={classNames(inputClasses)}
                 {...this.props}
                 id={this.getId()}
-                label={null}
                 value={this.getValue()}
                 onChange={this.changeValue}
+                onBlur={this.setBlur}
                 disabled={this.isFormDisabled() || this.props.disabled}
             />
         );
