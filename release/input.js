@@ -6,7 +6,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 var Formsy = require('formsy-react');
-var classNames = require('classnames/dedupe');
+var classNames = require('classnames');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
 // var Icon = require('./icon');
@@ -92,7 +92,7 @@ var Input = React.createClass({
     },
 
     renderElement: function renderElement() {
-        var inputClasses = ['input'];
+        var inputClasses = ['input'].concat(this.props.className);
 
         if (this.showErrors()) {
             inputClasses.push('is-danger');
@@ -101,9 +101,8 @@ var Input = React.createClass({
         // if (['range'].indexOf(this.props.type) !== -1) {
         //     className = null;
         // }
-        return React.createElement('input', _extends({
-            className: classNames(inputClasses)
-        }, this.props, {
+        return React.createElement('input', _extends({}, this.props, {
+            className: classNames(inputClasses),
             id: this.getId(),
             value: this.getValue(),
             onChange: this.changeValue,

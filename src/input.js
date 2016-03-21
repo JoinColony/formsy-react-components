@@ -4,7 +4,7 @@
 
 var React = require('react');
 var Formsy = require('formsy-react');
-var classNames = require('classnames/dedupe');
+var classNames = require('classnames');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
 // var Icon = require('./icon');
@@ -105,7 +105,7 @@ var Input = React.createClass({
     },
 
     renderElement: function() {
-        var inputClasses = ['input'];
+        var inputClasses = ['input'].concat(this.props.className);
 
         if (this.showErrors()) {
             inputClasses.push('is-danger');
@@ -116,8 +116,8 @@ var Input = React.createClass({
         // }
         return (
             <input
-                className={classNames(inputClasses)}
                 {...this.props}
+                className={classNames(inputClasses)}
                 id={this.getId()}
                 value={this.getValue()}
                 onChange={this.changeValue}
