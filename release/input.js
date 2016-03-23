@@ -12,14 +12,13 @@ var Row = require('./row');
 // var Icon = require('./icon');
 
 var Input = React.createClass({
-    displayName: 'Input',
 
+    displayName: 'Input',
 
     mixins: [Formsy.Mixin, ComponentMixin],
 
     propTypes: {
-        type: React.PropTypes.oneOf(['color', 'date', 'datetime', 'datetime-local', 'email', 'hidden', 'month', 'number', 'password', 'range', 'search', 'tel', 'text', 'time', 'url', 'week']),
-        immediateValidation: React.PropTypes.bool
+        type: React.PropTypes.oneOf(['color', 'date', 'datetime', 'datetime-local', 'email', 'hidden', 'month', 'number', 'password', 'range', 'search', 'tel', 'text', 'time', 'url', 'week'])
         // addonBefore: React.PropTypes.oneOfType([
         //     React.PropTypes.string,
         //     React.PropTypes.node

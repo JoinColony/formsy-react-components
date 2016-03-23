@@ -11,6 +11,8 @@ var Row = require('./row');
 
 var Input = React.createClass({
 
+    displayName: 'Input',
+
     mixins: [Formsy.Mixin, ComponentMixin],
 
     propTypes: {
@@ -31,8 +33,7 @@ var Input = React.createClass({
             'time',
             'url',
             'week'
-        ]),
-        immediateValidation: React.PropTypes.bool
+        ])
         // addonBefore: React.PropTypes.oneOfType([
         //     React.PropTypes.string,
         //     React.PropTypes.node
