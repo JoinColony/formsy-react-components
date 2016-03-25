@@ -4,6 +4,8 @@
 
 var React = require('react');
 var Formsy = require('formsy-react');
+var classNames = require('classnames');
+
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
 
@@ -53,17 +55,25 @@ var Select = React.createClass({
                 <option key={index} {...item} label={null}>{item.label}</option>
             );
         });
+
+        var selectClasses = ['select'].concat(this.props.className);
+
+        if (this.showErrors()) {
+            selectClasses.push('is-danger');
+        }
+
         return (
-            <select
-                className="form-control"
-                {...this.props}
-                id={this.getId()}
-                value={this.getValue()}
-                onChange={this.changeValue}
-                disabled={this.isFormDisabled() || this.props.disabled}
-            >
-                {optionNodes}
-            </select>
+            <span className={classNames(selectClasses)}>
+                <select
+                    {...this.props}
+                    id={this.getId()}
+                    value={this.getValue()}
+                    onChange={this.changeValue}
+                    disabled={this.isFormDisabled() || this.props.disabled}
+                >
+                  {optionNodes}
+                </select>
+              </span>
         );
     }
 });

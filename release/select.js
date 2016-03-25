@@ -6,6 +6,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 var Formsy = require('formsy-react');
+var classNames = require('classnames');
+
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
 
@@ -58,17 +60,26 @@ var Select = React.createClass({
                 item.label
             );
         });
+
+        var selectClasses = ['select'].concat(this.props.className);
+
+        if (this.showErrors()) {
+            selectClasses.push('is-danger');
+        }
+
         return React.createElement(
-            'select',
-            _extends({
-                className: 'form-control'
-            }, this.props, {
-                id: this.getId(),
-                value: this.getValue(),
-                onChange: this.changeValue,
-                disabled: this.isFormDisabled() || this.props.disabled
-            }),
-            optionNodes
+            'span',
+            { className: classNames(selectClasses) },
+            React.createElement(
+                'select',
+                _extends({}, this.props, {
+                    id: this.getId(),
+                    value: this.getValue(),
+                    onChange: this.changeValue,
+                    disabled: this.isFormDisabled() || this.props.disabled
+                }),
+                optionNodes
+            )
         );
     }
 });
