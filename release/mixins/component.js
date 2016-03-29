@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var classNames = require('classnames');
 
 module.exports = {
 
@@ -9,7 +10,8 @@ module.exports = {
         validatePristine: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
         labelClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
-        elementWrapperClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object])
+        elementWrapperClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
+        isLoading: React.PropTypes.bool
     },
 
     contextTypes: {
@@ -22,8 +24,10 @@ module.exports = {
 
     getDefaultProps: function getDefaultProps() {
         return {
+            layout: 'horizontal',
             disabled: false,
             validatePristine: false,
+            isLoading: false,
             onChange: function onChange() {},
             onFocus: function onFocus() {},
             onBlur: function onBlur() {}
@@ -41,13 +45,19 @@ module.exports = {
      * Also see the parent-context mixin.
      */
     getLayout: function getLayout() {
-        var defaultProperty = this.context.layout || 'horizontal';
+        var defaultProperty = this.context.layout || this.props.layout;
         return this.props.layout ? this.props.layout : defaultProperty;
     },
 
     getValidatePristine: function getValidatePristine() {
         var defaultProperty = this.context.validatePristine || false;
         return this.props.validatePristine ? this.props.validatePristine : defaultProperty;
+    },
+
+    getClassNames: function getClassNames(defaultClasses) {
+        return classNames([].concat(defaultClasses, {
+            'is-danger': this.showErrors()
+        }));
     },
 
     getRowClassName: function getRowClassName() {
@@ -70,7 +80,8 @@ module.exports = {
             elementWrapperClassName: this.getElementWrapperClassName(),
             layout: this.getLayout(),
             required: this.isRequired(),
-            hasErrors: this.showErrors()
+            hasErrors: this.showErrors(),
+            isLoading: this.props.isLoading
         };
     },
 
@@ -95,8 +106,12 @@ module.exports = {
         if (this.props.id) {
             return this.props.id;
         }
-        var label = typeof this.props.label === 'undefined' ? '' : this.props.label;
+        var label = this.getLabel();
         return ['frc', this.props.name.split('[').join('_').replace(']', ''), this.hashString(JSON.stringify(label))].join('-');
+    },
+
+    getLabel: function getLabel() {
+        return typeof this.props.label === 'undefined' ? '' : this.props.label;
     },
 
     renderHelp: function renderHelp() {

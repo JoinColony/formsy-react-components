@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var classNames = require('classnames');
 
 module.exports = {
 
@@ -21,7 +22,8 @@ module.exports = {
             React.PropTypes.string,
             React.PropTypes.array,
             React.PropTypes.object
-        ])
+        ]),
+        isLoading: React.PropTypes.bool
     },
 
     contextTypes: {
@@ -46,8 +48,10 @@ module.exports = {
 
     getDefaultProps: function() {
         return {
+            layout: 'horizontal',
             disabled: false,
             validatePristine: false,
+            isLoading: false,
             onChange: function() {},
             onFocus: function() {},
             onBlur: function() {}
@@ -65,13 +69,19 @@ module.exports = {
      * Also see the parent-context mixin.
      */
     getLayout: function() {
-        var defaultProperty = this.context.layout || 'horizontal';
+        var defaultProperty = this.context.layout || this.props.layout;
         return this.props.layout ? this.props.layout : defaultProperty;
     },
 
     getValidatePristine: function() {
         var defaultProperty = this.context.validatePristine || false;
         return this.props.validatePristine ? this.props.validatePristine : defaultProperty;
+    },
+
+    getClassNames: function (defaultClasses) {
+        return classNames([].concat(defaultClasses, {
+            'is-danger': this.showErrors()
+        }));
     },
 
     getRowClassName: function() {
@@ -94,7 +104,8 @@ module.exports = {
             elementWrapperClassName: this.getElementWrapperClassName(),
             layout: this.getLayout(),
             required: this.isRequired(),
-            hasErrors: this.showErrors()
+            hasErrors: this.showErrors(),
+            isLoading: this.props.isLoading
         };
     },
 
@@ -119,12 +130,16 @@ module.exports = {
         if (this.props.id) {
             return this.props.id;
         }
-        var label = (typeof this.props.label === 'undefined' ? '' : this.props.label);
+        var label = this.getLabel();
         return [
             'frc',
             this.props.name.split('[').join('_').replace(']', ''),
             this.hashString(JSON.stringify(label))
         ].join('-');
+    },
+
+    getLabel: function() {
+        return typeof this.props.label === 'undefined' ? '' : this.props.label;
     },
 
     renderHelp: function() {

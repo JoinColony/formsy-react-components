@@ -4,7 +4,6 @@
 
 var React = require('react');
 var Formsy = require('formsy-react');
-var classNames = require('classnames');
 
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
@@ -56,14 +55,8 @@ var Select = React.createClass({
             );
         });
 
-        var selectClasses = ['select'].concat(this.props.className);
-
-        if (this.showErrors()) {
-            selectClasses.push('is-danger');
-        }
-
         return (
-            <span className={classNames(selectClasses)}>
+            <span className={this.getClassNames('select')}>
                 <select
                     {...this.props}
                     id={this.getId()}

@@ -6,7 +6,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 var Formsy = require('formsy-react');
-var classNames = require('classnames');
 
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
@@ -61,15 +60,9 @@ var Select = React.createClass({
             );
         });
 
-        var selectClasses = ['select'].concat(this.props.className);
-
-        if (this.showErrors()) {
-            selectClasses.push('is-danger');
-        }
-
         return React.createElement(
             'span',
-            { className: classNames(selectClasses) },
+            { className: this.getClassNames('select') },
             React.createElement(
                 'select',
                 _extends({}, this.props, {

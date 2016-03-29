@@ -3,7 +3,7 @@
 'use strict';
 
 var React = require('react');
-var classNames = require('classnames/dedupe');
+var classNames = require('classnames');
 
 var Row = React.createClass({
     displayName: 'Row',
@@ -11,29 +11,24 @@ var Row = React.createClass({
 
     propTypes: {
         label: React.PropTypes.node,
-        rowClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
+        className: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
         labelClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
-        // elementWrapperClassName: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.array,
-        //     React.PropTypes.object
-        // ]),
         required: React.PropTypes.bool,
         hasErrors: React.PropTypes.bool,
-        fakeLabel: React.PropTypes.bool,
-        layout: React.PropTypes.oneOf(['horizontal', 'vertical', 'elementOnly']),
-        htmlFor: React.PropTypes.string
+        htmlFor: React.PropTypes.string,
+        isLoading: React.PropTypes.bool,
+        icon: React.PropTypes.string
     },
 
     getDefaultProps: function getDefaultProps() {
         return {
             label: '',
-            rowClassName: '',
+            className: '',
             labelClassName: '',
             elementWrapperClassName: '',
-            // required: false,
-            hasErrors: false,
-            fakeLabel: false
+            icon: '',
+            required: false,
+            hasErrors: false
         };
     },
 
@@ -79,14 +74,24 @@ var Row = React.createClass({
             );
         }
 
-        var rowClassNames = ['control'];
+        var rowClassNames = [{
+            control: true,
+            'is-loading': !!this.props.isLoading,
+            'has-icon': !!this.props.icon,
+            'has-icon-right': !!this.props.icon
+        }];
+
         rowClassNames.push(this.props.rowClassName);
 
         return React.createElement(
-            'p',
-            { className: classNames(rowClassNames) },
+            'div',
+            { className: 'control control--group' },
             this.renderLabel(),
-            this.props.children
+            React.createElement(
+                'p',
+                { className: classNames(rowClassNames) },
+                this.props.children
+            )
         );
 
         // var cssClasses = {
@@ -115,7 +120,7 @@ var Row = React.createClass({
         //     );
         // }
 
-        // cssClasses.row.push(this.props.rowClassName);
+        // cssClasses.row.push(this.props.className);
         // return (
         //     <div className={classNames(cssClasses.row)}>
         //         {this.renderLabel()}
