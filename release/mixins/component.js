@@ -8,15 +8,20 @@ module.exports = {
     propTypes: {
         layout: React.PropTypes.string,
         validatePristine: React.PropTypes.bool,
+        immediateValidation: React.PropTypes.bool,
+        isLoading: React.PropTypes.bool,
+        renderErrorMessages: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
         labelClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
-        elementWrapperClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
-        isLoading: React.PropTypes.bool
+        elementWrapperClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object])
     },
 
     contextTypes: {
         layout: React.PropTypes.string,
         validatePristine: React.PropTypes.bool,
+        immediateValidation: React.PropTypes.bool,
+        isLoading: React.PropTypes.bool,
+        renderErrorMessages: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
         labelClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
         elementWrapperClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object])
@@ -24,14 +29,36 @@ module.exports = {
 
     getDefaultProps: function getDefaultProps() {
         return {
-            layout: 'horizontal',
             disabled: false,
             validatePristine: false,
+            immediateValidation: false,
             isLoading: false,
+            renderErrorMessages: true,
             onChange: function onChange() {},
             onFocus: function onFocus() {},
             onBlur: function onBlur() {}
         };
+    },
+
+    getInitialState: function getInitialState() {
+        return {
+            sentGroupErrors: false
+        };
+    },
+
+    componentDidUpdate: function componentDidUpdate() {
+        if (this.props.isGrouped && this.showErrors() && !this.state.sentGroupErrors) {
+            this.setState({
+                sentGroupErrors: true
+            });
+            this.props.addGroupErrors(this.getId(), this.getErrorMessages());
+        }
+        if (this.props.isGrouped && !this.showErrors() && this.state.sentGroupErrors) {
+            this.setState({
+                sentGroupErrors: false
+            });
+            this.props.addGroupErrors(this.getId());
+        }
     },
 
     /**
@@ -120,18 +147,18 @@ module.exports = {
         }
         return React.createElement(
             'span',
-            { className: 'help-block' },
+            { className: 'help' },
             this.props.help
         );
     },
 
     renderErrorMessage: function renderErrorMessage() {
-        if (this.showErrors()) {
+        if (this.props.renderErrorMessages && this.showErrors()) {
             var errorMessages = this.getErrorMessages() || [];
             return errorMessages.map(function (message, key) {
                 return React.createElement(
                     'span',
-                    { key: key, className: 'help-block validation-message' },
+                    { key: key, className: 'help is-danger' },
                     message
                 );
             });

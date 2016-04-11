@@ -7,7 +7,6 @@ var Formsy = require('formsy-react');
 var classNames = require('classnames');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
-// var Icon = require('./icon');
 
 var Input = React.createClass({
 
@@ -34,25 +33,11 @@ var Input = React.createClass({
             'url',
             'week'
         ])
-        // addonBefore: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.node
-        // ]),
-        // addonAfter: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.node
-        // ]),
-        // buttonBefore: React.PropTypes.node,
-        // buttonAfter: React.PropTypes.node
     },
 
     getDefaultProps: function() {
         return {
             type: 'text'
-            // addonBefore: null,
-            // addonAfter: null,
-            // buttonBefore: null,
-            // buttonAfter: null
         };
     },
 
@@ -71,6 +56,12 @@ var Input = React.createClass({
         });
     },
 
+    renderLabel: function () {
+        if (this.props.label) {
+            return (<label className="label" htmlFor={this.getId()}>{this.props.label}</label>);
+        }
+    },
+
     render: function() {
         var element = this.renderElement();
 
@@ -78,21 +69,13 @@ var Input = React.createClass({
             return element;
         }
 
-        // if (this.props.addonBefore || this.props.addonAfter || this.props.buttonBefore || this.props.buttonAfter) {
-        //     element = this.renderInputGroup(element);
-        // }
-
-        if (this.getLayout() === 'elementOnly') {
-            return element;
+        if (this.props.isGrouped) {
+            return (
+                <div className="input-group">
+                    {this.renderLabel()}
+                    {element}
+                </div>);
         }
-
-        // var warningIcon = '';
-        // if (this.showErrors()) {
-        //     warningIcon = (<span>Error</span>);
-        //     // warningIcon = (
-        //     //     <Icon symbol="remove" className="form-control-feedback" />
-        //     // );
-        // }
 
         return (
             <Row {...this.getRowProperties()} htmlFor={this.getId()}>
@@ -101,8 +84,6 @@ var Input = React.createClass({
                 {this.renderErrorMessage()}
             </Row>
         );
-        // {warningIcon}
-        // {this.renderHelp()}
     },
 
     renderElement: function() {
@@ -112,9 +93,6 @@ var Input = React.createClass({
             inputClasses.push('is-danger');
         }
 
-        // if (['range'].indexOf(this.props.type) !== -1) {
-        //     className = null;
-        // }
         return (
             <input
                 {...this.props}
@@ -127,36 +105,6 @@ var Input = React.createClass({
             />
         );
     }
-
-    // renderInputGroup: function(element) {
-    //     return (
-    //         <div className="input-group">
-    //             {this.renderAddon(this.props.addonBefore)}
-    //             {this.renderButton(this.props.buttonBefore)}
-    //             {element}
-    //             {this.renderAddon(this.props.addonAfter)}
-    //             {this.renderButton(this.props.buttonAfter)}
-    //         </div>
-    //     );
-    // },
-
-    // renderAddon: function(addon) {
-    //     if (!addon) {
-    //         return false;
-    //     }
-    //     return (
-    //         <span className="input-group-addon">{addon}</span>
-    //     );
-    // },
-
-    // renderButton: function(button) {
-    //     if (!button) {
-    //         return false;
-    //     }
-    //     return (
-    //         <span className="input-group-btn">{button}</span>
-    //     );
-    // }
 
 });
 

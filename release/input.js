@@ -9,7 +9,6 @@ var Formsy = require('formsy-react');
 var classNames = require('classnames');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
-// var Icon = require('./icon');
 
 var Input = React.createClass({
 
@@ -19,25 +18,11 @@ var Input = React.createClass({
 
     propTypes: {
         type: React.PropTypes.oneOf(['color', 'date', 'datetime', 'datetime-local', 'email', 'hidden', 'month', 'number', 'password', 'range', 'search', 'tel', 'text', 'time', 'url', 'week'])
-        // addonBefore: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.node
-        // ]),
-        // addonAfter: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.node
-        // ]),
-        // buttonBefore: React.PropTypes.node,
-        // buttonAfter: React.PropTypes.node
     },
 
     getDefaultProps: function getDefaultProps() {
         return {
             type: 'text'
-            // addonBefore: null,
-            // addonAfter: null,
-            // buttonBefore: null,
-            // buttonAfter: null
         };
     },
 
@@ -56,6 +41,16 @@ var Input = React.createClass({
         });
     },
 
+    renderLabel: function renderLabel() {
+        if (this.props.label) {
+            return React.createElement(
+                'label',
+                { className: 'label', htmlFor: this.getId() },
+                this.props.label
+            );
+        }
+    },
+
     render: function render() {
         var element = this.renderElement();
 
@@ -63,21 +58,14 @@ var Input = React.createClass({
             return element;
         }
 
-        // if (this.props.addonBefore || this.props.addonAfter || this.props.buttonBefore || this.props.buttonAfter) {
-        //     element = this.renderInputGroup(element);
-        // }
-
-        if (this.getLayout() === 'elementOnly') {
-            return element;
+        if (this.props.isGrouped) {
+            return React.createElement(
+                'div',
+                { className: 'input-group' },
+                this.renderLabel(),
+                element
+            );
         }
-
-        // var warningIcon = '';
-        // if (this.showErrors()) {
-        //     warningIcon = (<span>Error</span>);
-        //     // warningIcon = (
-        //     //     <Icon symbol="remove" className="form-control-feedback" />
-        //     // );
-        // }
 
         return React.createElement(
             Row,
@@ -86,8 +74,6 @@ var Input = React.createClass({
             this.renderHelp(),
             this.renderErrorMessage()
         );
-        // {warningIcon}
-        // {this.renderHelp()}
     },
 
     renderElement: function renderElement() {
@@ -97,9 +83,6 @@ var Input = React.createClass({
             inputClasses.push('is-danger');
         }
 
-        // if (['range'].indexOf(this.props.type) !== -1) {
-        //     className = null;
-        // }
         return React.createElement('input', _extends({}, this.props, {
             className: classNames(inputClasses),
             id: this.getId(),
@@ -109,36 +92,6 @@ var Input = React.createClass({
             disabled: this.isFormDisabled() || this.props.disabled
         }));
     }
-
-    // renderInputGroup: function(element) {
-    //     return (
-    //         <div className="input-group">
-    //             {this.renderAddon(this.props.addonBefore)}
-    //             {this.renderButton(this.props.buttonBefore)}
-    //             {element}
-    //             {this.renderAddon(this.props.addonAfter)}
-    //             {this.renderButton(this.props.buttonAfter)}
-    //         </div>
-    //     );
-    // },
-
-    // renderAddon: function(addon) {
-    //     if (!addon) {
-    //         return false;
-    //     }
-    //     return (
-    //         <span className="input-group-addon">{addon}</span>
-    //     );
-    // },
-
-    // renderButton: function(button) {
-    //     if (!button) {
-    //         return false;
-    //     }
-    //     return (
-    //         <span className="input-group-btn">{button}</span>
-    //     );
-    // }
 
 });
 

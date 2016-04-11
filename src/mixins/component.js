@@ -8,6 +8,9 @@ module.exports = {
     propTypes: {
         layout: React.PropTypes.string,
         validatePristine: React.PropTypes.bool,
+        immediateValidation: React.PropTypes.bool,
+        isLoading: React.PropTypes.bool,
+        renderErrorMessages: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.array,
@@ -22,13 +25,15 @@ module.exports = {
             React.PropTypes.string,
             React.PropTypes.array,
             React.PropTypes.object
-        ]),
-        isLoading: React.PropTypes.bool
+        ])
     },
 
     contextTypes: {
         layout: React.PropTypes.string,
         validatePristine: React.PropTypes.bool,
+        immediateValidation: React.PropTypes.bool,
+        isLoading: React.PropTypes.bool,
+        renderErrorMessages: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.array,
@@ -48,14 +53,36 @@ module.exports = {
 
     getDefaultProps: function() {
         return {
-            layout: 'horizontal',
             disabled: false,
             validatePristine: false,
+            immediateValidation: false,
             isLoading: false,
+            renderErrorMessages: true,
             onChange: function() {},
             onFocus: function() {},
             onBlur: function() {}
         };
+    },
+
+    getInitialState: function () {
+        return {
+            sentGroupErrors: false
+        }
+    },
+
+    componentDidUpdate: function () {
+        if (this.props.isGrouped && this.showErrors() && !this.state.sentGroupErrors) {
+            this.setState({
+                sentGroupErrors: true
+            });
+            this.props.addGroupErrors(this.getId(), this.getErrorMessages());
+        }
+        if (this.props.isGrouped && !this.showErrors() && this.state.sentGroupErrors) {
+            this.setState({
+                sentGroupErrors: false
+            });
+            this.props.addGroupErrors(this.getId());
+        }
     },
 
     /**
@@ -147,16 +174,16 @@ module.exports = {
             return '';
         }
         return (
-            <span className="help-block">{this.props.help}</span>
+            <span className="help">{this.props.help}</span>
         );
     },
 
     renderErrorMessage: function() {
-        if (this.showErrors()) {
+        if (this.props.renderErrorMessages && this.showErrors()) {
             var errorMessages = this.getErrorMessages() || [];
             return errorMessages.map((message, key) => {
                 return (
-                    <span key={key} className="help-block validation-message">{message}</span>
+                    <span key={key} className="help is-danger">{message}</span>
                 );
             });
         }

@@ -2,6 +2,8 @@
 
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var React = require('react');
 var classNames = require('classnames');
 
@@ -13,6 +15,7 @@ var Row = React.createClass({
         label: React.PropTypes.node,
         className: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
         labelClassName: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array, React.PropTypes.object]),
+        renderErrorMessages: React.PropTypes.bool,
         required: React.PropTypes.bool,
         hasErrors: React.PropTypes.bool,
         htmlFor: React.PropTypes.string,
@@ -32,31 +35,22 @@ var Row = React.createClass({
         };
     },
 
+    getInitialState: function getInitialState() {
+        return {
+            errors: {}
+        };
+    },
+
     renderLabel: function renderLabel() {
 
-        if (this.props.layout === 'elementOnly' || !this.props.label) {
+        if (!this.props.label) {
             return;
         }
 
         var labelClassNames = [];
         labelClassNames.push('label');
-
-        // if (this.props.layout === 'horizontal') {
-        //     labelClassNames.push('col-sm-3');
-        // }
-
         labelClassNames.push(this.props.labelClassName);
 
-        // if (this.props.fakeLabel) {
-        //     return (
-        //         <div className={classNames(labelClassNames)}>
-        //             <strong>
-        //                 {this.props.label}
-        //                 // {this.props.required ? ' *' : null}
-        //             </strong>
-        //         </div>
-        //     );
-        // }
         return React.createElement(
             'label',
             { className: classNames(labelClassNames), htmlFor: this.props.htmlFor },
@@ -64,18 +58,38 @@ var Row = React.createClass({
         );
     },
 
-    render: function render() {
+    addGroupErrors: function addGroupErrors(id, errs) {
+        var errors = this.state.errors;
+        errors[id] = errs || [];
+        this.setState({
+            errors: errors
+        });
+    },
 
-        if (this.props.layout === 'elementOnly') {
+    renderGroupErrorMessages: function renderGroupErrorMessages() {
+        if (this.props.renderErrorMessages === false) {
+            return;
+        }
+        var errors = this.state.errors;
+        var groupErrors = [];
+        Object.keys(this.state.errors).forEach(function (id) {
+            groupErrors = groupErrors.concat(errors[id]);
+        });
+        return groupErrors.map(function (message, key) {
             return React.createElement(
                 'span',
-                null,
-                this.props.children
+                { key: key, className: 'help is-danger' },
+                message
             );
-        }
+        });
+    },
+
+    render: function render() {
+        var _this = this;
 
         var rowClassNames = [{
             control: true,
+            'is-grouped': !!this.props.isGroup,
             'is-loading': !!this.props.isLoading,
             'has-icon': !!this.props.icon,
             'has-icon-right': !!this.props.icon
@@ -83,9 +97,38 @@ var Row = React.createClass({
 
         rowClassNames.push(this.props.rowClassName);
 
+        if (this.props.isGroup) {
+            var _ret = function () {
+
+                var groupProps = {
+                    isGrouped: true,
+                    addGroupErrors: _this.addGroupErrors
+                };
+
+                var childrenWithProps = React.Children.map(_this.props.children, function (child) {
+                    if (typeof child.type === 'function') {
+                        return React.cloneElement(child, groupProps);
+                    } else {
+                        return child;
+                    }
+                });
+
+                return {
+                    v: React.createElement(
+                        'div',
+                        { className: classNames(rowClassNames) },
+                        childrenWithProps,
+                        _this.renderGroupErrorMessages()
+                    )
+                };
+            }();
+
+            if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+        }
+
         return React.createElement(
             'div',
-            { className: 'control control--group' },
+            { className: 'control' },
             this.renderLabel(),
             React.createElement(
                 'p',
@@ -93,40 +136,6 @@ var Row = React.createClass({
                 this.props.children
             )
         );
-
-        // var cssClasses = {
-        //     row: ['form-group'],
-        //     elementWrapper: []
-        // };
-
-        // if (this.props.hasErrors) {
-        //     cssClasses.row.push('has-error');
-        //     cssClasses.row.push('has-feedback');
-        // }
-
-        // var element = this.props.children;
-        // if (this.props.layout === 'horizontal') {
-
-        //     // Horizontal layout needs a 'row' class for Bootstrap 4
-        //     cssClasses.row.push('row');
-
-        //     cssClasses.elementWrapper.push('col-sm-9');
-        //     cssClasses.elementWrapper.push(this.props.elementWrapperClassName);
-
-        //     element = (
-        //         <div className={classNames(cssClasses.elementWrapper)}>
-        //             {this.props.children}
-        //         </div>
-        //     );
-        // }
-
-        // cssClasses.row.push(this.props.className);
-        // return (
-        //     <div className={classNames(cssClasses.row)}>
-        //         {this.renderLabel()}
-        //         {element}
-        //     </div>
-        // );
     }
 
 });
