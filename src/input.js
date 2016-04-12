@@ -50,7 +50,10 @@ var Input = React.createClass({
         });
     },
 
-    setBlur: function () {
+    setBlur: function (evt) {
+        if (this.props.onBlur) {
+            this.props.onBlur(evt);
+        }
         this.setState({
             blurred: true
         });
