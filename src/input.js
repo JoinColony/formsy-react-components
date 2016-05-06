@@ -72,6 +72,15 @@ var Input = React.createClass({
             return element;
         }
 
+        if (this.props.elementOnly) {
+            return (
+                <div className="input-standalone">
+                    {element}
+                    {this.renderErrorMessage()}
+                </div>
+            );
+        }
+
         if (this.props.isGrouped) {
             return (
                 <div className="input-group">

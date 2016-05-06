@@ -10,6 +10,7 @@ module.exports = {
         validatePristine: React.PropTypes.bool,
         immediateValidation: React.PropTypes.bool,
         isLoading: React.PropTypes.bool,
+        elementOnly: React.PropTypes.bool,
         onBlur: React.PropTypes.func,
         renderErrorMessages: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([
@@ -34,6 +35,7 @@ module.exports = {
         validatePristine: React.PropTypes.bool,
         immediateValidation: React.PropTypes.bool,
         isLoading: React.PropTypes.bool,
+        elementOnly: React.PropTypes.bool,
         onBlur: React.PropTypes.func,
         renderErrorMessages: React.PropTypes.bool,
         rowClassName: React.PropTypes.oneOfType([

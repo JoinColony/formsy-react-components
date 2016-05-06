@@ -73,7 +73,7 @@ var Textarea = React.createClass({
 
     render: function render() {
 
-        if (this.getLayout() === 'elementOnly') {
+        if (this.props.elementOnly) {
             return this.renderElement();
         }
 

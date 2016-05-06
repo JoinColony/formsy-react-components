@@ -61,6 +61,15 @@ var Input = React.createClass({
             return element;
         }
 
+        if (this.props.elementOnly) {
+            return React.createElement(
+                'div',
+                { className: 'input-standalone' },
+                element,
+                this.renderErrorMessage()
+            );
+        }
+
         if (this.props.isGrouped) {
             return React.createElement(
                 'div',
