@@ -40,38 +40,32 @@ var RadioGroup = React.createClass({
         var controls = this.props.options.map(function (radio, key) {
             var checked = _this.getValue() === radio.value;
             var disabled = _this.isFormDisabled() || radio.disabled || _this.props.disabled;
-            var className = 'radio' + (disabled ? ' disabled' : '');
-            if (_this.props.type === 'inline') {
-                return React.createElement(
-                    'label',
-                    { className: 'radio-inline', key: key },
-                    React.createElement('input', {
-                        checked: checked,
-                        type: 'radio',
-                        value: radio.value,
-                        onChange: _this.changeRadio,
-                        disabled: disabled
-                    }),
-                    ' ',
-                    radio.label
-                );
-            }
+            // if (_this.props.type === 'inline') {
+            //     return (
+            //         <label className="radio-inline" key={key}>
+            //             <input
+            //                 checked={checked}
+            //                 type="radio"
+            //                 value={radio.value}
+            //                 onChange={_this.changeRadio}
+            //                 disabled={disabled}
+            //             /> {radio.label}
+            //         </label>
+            //     );
+            // }
             return React.createElement(
-                'div',
-                { className: className, key: key },
-                React.createElement(
-                    'label',
-                    null,
-                    React.createElement('input', {
-                        checked: checked,
-                        type: 'radio',
-                        value: radio.value,
-                        onChange: _this.changeRadio,
-                        disabled: disabled
-                    }),
-                    ' ',
-                    radio.label
-                )
+                'label',
+                { className: 'radio' },
+                React.createElement('input', {
+                    className: disabled ? 'is-disabled' : '',
+                    checked: checked,
+                    type: 'radio',
+                    value: radio.value,
+                    onChange: _this.changeRadio,
+                    disabled: disabled
+                }),
+                ' ',
+                radio.label
             );
         });
         return controls;

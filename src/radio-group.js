@@ -36,32 +36,30 @@ var RadioGroup = React.createClass({
         var controls = this.props.options.map(function(radio, key) {
             var checked = (_this.getValue() === radio.value);
             var disabled = _this.isFormDisabled() || radio.disabled || _this.props.disabled;
-            var className = 'radio' + (disabled ? ' disabled' : '');
-            if (_this.props.type === 'inline') {
-                return (
-                    <label className="radio-inline" key={key}>
-                        <input
-                            checked={checked}
-                            type="radio"
-                            value={radio.value}
-                            onChange={_this.changeRadio}
-                            disabled={disabled}
-                        /> {radio.label}
-                    </label>
-                );
-            }
+            // if (_this.props.type === 'inline') {
+            //     return (
+            //         <label className="radio-inline" key={key}>
+            //             <input
+            //                 checked={checked}
+            //                 type="radio"
+            //                 value={radio.value}
+            //                 onChange={_this.changeRadio}
+            //                 disabled={disabled}
+            //             /> {radio.label}
+            //         </label>
+            //     );
+            // }
             return (
-                <div className={className} key={key}>
-                    <label>
-                        <input
-                            checked={checked}
-                            type="radio"
-                            value={radio.value}
-                            onChange={_this.changeRadio}
-                            disabled={disabled}
-                        /> {radio.label}
-                    </label>
-                </div>
+                <label className="radio">
+                    <input
+                        className={ disabled ? 'is-disabled' : '' }
+                        checked={checked}
+                        type="radio"
+                        value={radio.value}
+                        onChange={_this.changeRadio}
+                        disabled={disabled}
+                    /> {radio.label}
+                </label>
             );
         });
         return controls;
