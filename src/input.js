@@ -52,7 +52,7 @@ var Input = React.createClass({
 
     setBlur: function (evt) {
         if (this.props.onBlur) {
-            this.props.onBlur(evt);
+            this.props.onBlur(this.props.name, evt.currentTarget.value);
         }
         this.setState({
             blurred: true

@@ -38,6 +38,9 @@ var Textarea = React.createClass({
     },
 
     setBlur: function () {
+        if (this.props.onBlur) {
+            this.props.onBlur(this.props.name, evt.currentTarget.value);
+        }
         this.setState({
             blurred: true
         });
