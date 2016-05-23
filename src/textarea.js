@@ -62,6 +62,8 @@ var Textarea = React.createClass({
                 value={this.getValue()}
                 onChange={this.changeValue}
                 onBlur={this.setBlur}
+                aria-label={this.props.elementOnly ? this.props.label : undefined}
+                title={this.props.title || this.props.label}
                 disabled={this.isFormDisabled() || this.props.disabled}
             ></textarea>
         );
@@ -77,8 +79,14 @@ var Textarea = React.createClass({
 
     render: function render() {
 
+
         if (this.props.elementOnly) {
-            return this.renderElement();
+            return (
+                <div className="input-standalone">
+                    {this.renderElement()}
+                    {this.renderErrorMessage()}
+                </div>
+            );
         }
 
         return (

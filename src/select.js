@@ -32,8 +32,13 @@ var Select = React.createClass({
 
     render: function() {
 
-        if (this.getLayout() === 'elementOnly') {
-            return this.renderElement();
+        if (this.props.elementOnly) {
+            return (
+                <div className="input-standalone">
+                    {this.renderElement()}
+                    {this.renderErrorMessage()}
+                </div>
+            );
         }
 
         return (
@@ -62,6 +67,8 @@ var Select = React.createClass({
                     id={this.getId()}
                     value={this.getValue()}
                     onChange={this.changeValue}
+                    aria-label={this.props.elementOnly ? this.props.label : undefined}
+                    title={this.props.title || this.props.label}
                     disabled={this.isFormDisabled() || this.props.disabled}
                 >
                   {optionNodes}
