@@ -38,9 +38,7 @@ module.exports = {
             immediateValidation: false,
             isLoading: false,
             renderErrorMessages: true,
-            onChange: function onChange() {},
-            onFocus: function onFocus() {},
-            onBlur: function onBlur() {}
+            onChange: function onChange() {}
         };
     },
 

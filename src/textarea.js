@@ -37,7 +37,7 @@ var Textarea = React.createClass({
         });
     },
 
-    setBlur: function () {
+    setBlur: function (evt) {
         if (this.props.onBlur) {
             this.props.onBlur(this.props.name, evt.currentTarget.value);
         }

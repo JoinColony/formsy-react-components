@@ -62,16 +62,14 @@ module.exports = {
             immediateValidation: false,
             isLoading: false,
             renderErrorMessages: true,
-            onChange: function() {},
-            onFocus: function() {},
-            onBlur: function() {}
+            onChange: function() {}
         };
     },
 
     getInitialState: function () {
         return {
             sentGroupErrors: false
-        }
+        };
     },
 
     componentDidUpdate: function () {
