@@ -31,21 +31,19 @@ var Checkbox = React.createClass({
 
     renderElement: function renderElement() {
         return React.createElement(
-            'div',
+            'label',
             { className: 'checkbox' },
-            React.createElement(
-                'label',
-                null,
-                React.createElement('input', _extends({}, this.props, {
-                    id: this.getId(),
-                    type: 'checkbox',
-                    checked: this.getValue() === true,
-                    onChange: this.changeValue,
-                    disabled: this.isFormDisabled() || this.props.disabled
-                })),
-                ' ',
-                this.props.label
-            )
+            React.createElement('input', _extends({}, this.props, {
+                id: this.getId(),
+                type: 'checkbox',
+                'aria-label': this.props.elementOnly ? this.props.label : undefined,
+                title: this.props.title || this.props.label,
+                checked: this.getValue() === true,
+                onChange: this.changeValue,
+                disabled: this.isFormDisabled() || this.props.disabled
+            })),
+            ' ',
+            this.props.label
         );
     },
 
@@ -53,7 +51,7 @@ var Checkbox = React.createClass({
 
         var element = this.renderElement();
 
-        if (this.getLayout() === 'elementOnly') {
+        if (this.props.elementOnly) {
             return element;
         }
 
