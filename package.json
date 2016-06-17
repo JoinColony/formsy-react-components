@@ -55,6 +55,6 @@
     "gulp-babel": "^6.0.0",
     "jest-cli": "0.5.x",
     "react-addons-test-utils": "^15.1.0",
-    "react-dom": "^0.14.0"
+    "react-dom": "^15.1.0"
   }
 }
