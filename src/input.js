@@ -42,7 +42,7 @@ var Input = React.createClass({
     },
 
     changeValue: function(event) {
-        var value = event.currentTarget.value;
+        var value = event.target.value;
         this.setValue(value);
         this.props.onChange(this.props.name, value);
         this.setState({
@@ -52,7 +52,7 @@ var Input = React.createClass({
 
     setBlur: function (evt) {
         if (this.props.onBlur) {
-            this.props.onBlur(this.props.name, evt.currentTarget.value);
+            this.props.onBlur(this.props.name, evt.target.value);
         }
         this.setState({
             blurred: true

@@ -23,7 +23,7 @@ var File = React.createClass({
     },
 
     changeValue: function changeValue(event) {
-        var target = event.currentTarget;
+        var target = event.target;
         var value = target.value;
         this.setState({ fileList: target.files });
         this.setValue(target.files);

@@ -20,7 +20,7 @@ var Checkbox = React.createClass({
     },
 
     changeValue: function(event) {
-        var target = event.currentTarget;
+        var target = event.target;
         this.setValue(target.checked);
         this.props.onChange(this.props.name, target.checked);
     },

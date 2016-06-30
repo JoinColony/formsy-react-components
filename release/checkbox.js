@@ -24,7 +24,7 @@ var Checkbox = React.createClass({
     },
 
     changeValue: function changeValue(event) {
-        var target = event.currentTarget;
+        var target = event.target;
         this.setValue(target.checked);
         this.props.onChange(this.props.name, target.checked);
     },

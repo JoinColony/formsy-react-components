@@ -30,7 +30,7 @@ var RadioGroup = React.createClass({
     },
 
     changeRadio: function changeRadio(event) {
-        var value = event.currentTarget.value;
+        var value = event.target.value;
         this.setValue(value);
         this.props.onChange(this.props.name, value);
     },

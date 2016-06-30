@@ -17,7 +17,7 @@ var Select = React.createClass({
     mixins: [Formsy.Mixin, ComponentMixin],
 
     changeValue: function changeValue(event) {
-        var target = event.currentTarget;
+        var target = event.target;
         var value;
         if (this.props.multiple) {
             value = [];
