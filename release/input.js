@@ -98,7 +98,7 @@ var Input = React.createClass({
         return React.createElement('input', _extends({}, this.props, {
             className: classNames(inputClasses),
             id: this.getId(),
-            value: this.getValue(),
+            value: this.getValue() || '',
             onChange: this.changeValue,
             onBlur: this.setBlur,
             'aria-label': this.props.elementOnly ? this.props.label : undefined,

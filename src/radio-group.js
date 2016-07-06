@@ -1,7 +1,5 @@
 /*jshint node:true */
 
-'use strict';
-
 var React = require('react');
 var Formsy = require('formsy-react');
 var ComponentMixin = require('./mixins/component');
@@ -33,24 +31,12 @@ var RadioGroup = React.createClass({
 
     renderElement: function() {
         var _this = this;
+        var id = this.getId();
         var controls = this.props.options.map(function(radio, key) {
             var checked = (_this.getValue() === radio.value);
             var disabled = _this.isFormDisabled() || radio.disabled || _this.props.disabled;
-            // if (_this.props.type === 'inline') {
-            //     return (
-            //         <label className="radio-inline" key={key}>
-            //             <input
-            //                 checked={checked}
-            //                 type="radio"
-            //                 value={radio.value}
-            //                 onChange={_this.changeRadio}
-            //                 disabled={disabled}
-            //             /> {radio.label}
-            //         </label>
-            //     );
-            // }
             return (
-                <label className="radio">
+                <label className="radio" key={id + '-' + key}>
                     <input
                         className={ disabled ? 'is-disabled' : '' }
                         checked={checked}
@@ -58,7 +44,7 @@ var RadioGroup = React.createClass({
                         value={radio.value}
                         onChange={_this.changeRadio}
                         disabled={disabled}
-                    /> {radio.label}
+                      /> {radio.label}
                 </label>
             );
         });
@@ -67,7 +53,7 @@ var RadioGroup = React.createClass({
 
     render: function() {
 
-        if (this.getLayout() === 'elementOnly') {
+        if (this.props.elementOnly) {
             return (
                 <div>{this.renderElement()}</div>
             );
@@ -76,7 +62,6 @@ var RadioGroup = React.createClass({
         return (
             <Row
                 {...this.getRowProperties()}
-                fakeLabel={true}
             >
                 {this.renderElement()}
                 {this.renderHelp()}

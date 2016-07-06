@@ -1,8 +1,6 @@
-/*jshint node:true */
-
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+/*jshint node:true */
 
 var React = require('react');
 var Formsy = require('formsy-react');
@@ -37,25 +35,13 @@ var RadioGroup = React.createClass({
 
     renderElement: function renderElement() {
         var _this = this;
+        var id = this.getId();
         var controls = this.props.options.map(function (radio, key) {
             var checked = _this.getValue() === radio.value;
             var disabled = _this.isFormDisabled() || radio.disabled || _this.props.disabled;
-            // if (_this.props.type === 'inline') {
-            //     return (
-            //         <label className="radio-inline" key={key}>
-            //             <input
-            //                 checked={checked}
-            //                 type="radio"
-            //                 value={radio.value}
-            //                 onChange={_this.changeRadio}
-            //                 disabled={disabled}
-            //             /> {radio.label}
-            //         </label>
-            //     );
-            // }
             return React.createElement(
                 'label',
-                { className: 'radio' },
+                { className: 'radio', key: id + '-' + key },
                 React.createElement('input', {
                     className: disabled ? 'is-disabled' : '',
                     checked: checked,
@@ -73,7 +59,7 @@ var RadioGroup = React.createClass({
 
     render: function render() {
 
-        if (this.getLayout() === 'elementOnly') {
+        if (this.props.elementOnly) {
             return React.createElement(
                 'div',
                 null,
@@ -83,9 +69,7 @@ var RadioGroup = React.createClass({
 
         return React.createElement(
             Row,
-            _extends({}, this.getRowProperties(), {
-                fakeLabel: true
-            }),
+            this.getRowProperties(),
             this.renderElement(),
             this.renderHelp(),
             this.renderErrorMessage()

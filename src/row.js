@@ -1,7 +1,5 @@
 /*jshint node:true */
 
-'use strict';
-
 var React = require('react');
 var classNames = require('classnames');
 
@@ -42,7 +40,7 @@ var Row = React.createClass({
     getInitialState: function () {
         return {
             errors: {}
-        }
+        };
     },
 
     renderLabel: function() {

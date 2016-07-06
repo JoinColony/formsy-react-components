@@ -72,7 +72,7 @@ var Select = React.createClass({
                 'select',
                 _extends({}, this.props, {
                     id: this.getId(),
-                    value: this.getValue(),
+                    value: this.getValue() || '',
                     onChange: this.changeValue,
                     'aria-label': this.props.elementOnly ? this.props.label : undefined,
                     title: this.props.title || this.props.label,
