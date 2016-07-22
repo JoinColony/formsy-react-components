@@ -9,6 +9,7 @@ var Formsy = require('formsy-react');
 var classNames = require('classnames');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
+var propUtilities = require('./prop-utilities');
 
 var Input = React.createClass({
 
@@ -95,7 +96,7 @@ var Input = React.createClass({
             inputClasses.push('is-danger');
         }
 
-        return React.createElement('input', _extends({}, this.props, {
+        return React.createElement('input', _extends({}, propUtilities.cleanProps(this.props), {
             className: classNames(inputClasses),
             id: this.getId(),
             value: this.getValue() || '',

@@ -4,16 +4,16 @@
 
 var React = require('react');
 var Formsy = require('formsy-react');
-
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
+var propUtilities = require('./prop-utilities');
 
 var Select = React.createClass({
 
     mixins: [Formsy.Mixin, ComponentMixin],
 
     changeValue: function(event) {
-        var target = event.target;
+        var target = event.currentTarget;
         var value;
         if (this.props.multiple) {
             value = [];
@@ -54,26 +54,69 @@ var Select = React.createClass({
     },
 
     renderElement: function() {
-        var optionNodes = this.props.options.map(function(item, index) {
-            return (
-                <option key={index} {...item} label={null}>{item.label}</option>
-            );
-        });
 
+        var renderOption = function(item, key) {
+            const { group, label, ...rest } = item;
+            return (
+                <option key={key} {...rest}>{item.label}</option>
+            );
+        };
+
+        var options = this.props.options;
+
+        var groups = options.filter(function (item) {
+            return item.group;
+        }).map(function (item) {
+            return item.group;
+        });
+        // Get the unique items in group.
+        groups = [...new Set(groups)];
+
+        var optionNodes = [];
+
+        if (groups.length == 0) {
+            optionNodes = options.map(function (item, index) {
+                return renderOption(item, index);
+            });
+        } else {
+            // For items without groups.
+            var itemsWithoutGroup = options.filter(function (item) {
+                return !item.group;
+            });
+
+            itemsWithoutGroup.forEach(function (item, index) {
+                optionNodes.push(renderOption(item, 'no-group-' + index));
+            });
+
+            groups.forEach(function (group, groupIndex) {
+
+                var groupItems = options.filter(function (item) {
+                    return item.group === group;
+                });
+
+                var groupOptionNodes = groupItems.map(function (item, index) {
+                    return renderOption(item, groupIndex + '-' + index);
+                });
+
+                optionNodes.push(<optgroup label={group} key={groupIndex}>{groupOptionNodes}</optgroup>);
+            });
+        }
         return (
-            <span className={this.getClassNames('select')}>
-                <select
-                    {...this.props}
-                    id={this.getId()}
-                    value={this.getValue() || ''}
-                    onChange={this.changeValue}
-                    aria-label={this.props.elementOnly ? this.props.label : undefined}
-                    title={this.props.title || this.props.label}
-                    disabled={this.isFormDisabled() || this.props.disabled}
-                >
+           <span className={this.getClassNames('select')}>
+              <select
+                  ref={(c) => this.element = c}
+                  className="form-control"
+                  {...propUtilities.cleanProps(this.props)}
+                  id={this.getId()}
+                  value={this.getValue() || ''}
+                  onChange={this.changeValue}
+                  aria-label={this.props.elementOnly ? this.props.label : undefined}
+                  title={this.props.title || this.props.label}
+                  disabled={this.isFormDisabled() || this.props.disabled}
+              >
                   {optionNodes}
                 </select>
-              </span>
+            </span>
         );
     }
 });

@@ -8,6 +8,7 @@ var React = require('react');
 var Formsy = require('formsy-react');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
+var propUtilities = require('./prop-utilities');
 
 var Checkbox = React.createClass({
     displayName: 'Checkbox',
@@ -33,7 +34,7 @@ var Checkbox = React.createClass({
         return React.createElement(
             'label',
             { className: 'checkbox' },
-            React.createElement('input', _extends({}, this.props, {
+            React.createElement('input', _extends({}, propUtilities.cleanProps(this.props), {
                 id: this.getId(),
                 type: 'checkbox',
                 'aria-label': this.props.elementOnly ? this.props.label : undefined,

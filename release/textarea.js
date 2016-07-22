@@ -12,6 +12,7 @@ var classNames = require('classnames');
 
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
+var propUtilities = require('./prop-utilities');
 
 var Textarea = React.createClass({
     displayName: 'Textarea',
@@ -56,7 +57,7 @@ var Textarea = React.createClass({
             textareaClasses.push('is-danger');
         }
 
-        return React.createElement('textarea', _extends({}, this.props, {
+        return React.createElement('textarea', _extends({}, propUtilities.cleanProps(this.props), {
             className: classNames(textareaClasses),
             id: this.getId(),
             value: this.getValue(),

@@ -7,6 +7,7 @@ var Formsy = require('formsy-react');
 var classNames = require('classnames');
 var ComponentMixin = require('./mixins/component');
 var Row = require('./row');
+var propUtilities = require('./prop-utilities');
 
 var Input = React.createClass({
 
@@ -107,7 +108,7 @@ var Input = React.createClass({
 
         return (
             <input
-                {...this.props}
+                {...propUtilities.cleanProps(this.props)}
                 className={classNames(inputClasses)}
                 id={this.getId()}
                 value={this.getValue() || ''}
