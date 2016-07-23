@@ -8,6 +8,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+require('core-js/fn/array/from');
+var Set = require('core-js/fn/set');
+
 var React = require('react');
 var Formsy = require('formsy-react');
 var ComponentMixin = require('./mixins/component');

@@ -2,6 +2,9 @@
 
 'use strict';
 
+require('core-js/fn/array/from');
+var Set = require('core-js/fn/set');
+
 var React = require('react');
 var Formsy = require('formsy-react');
 var ComponentMixin = require('./mixins/component');
